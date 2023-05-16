@@ -1,24 +1,23 @@
-
 const express = require('express');
 const cors = require('cors'); // para evitar restricciones entre llamadas de sitios
-const producto = express.Router();  // trae el metodo router de express para hacer los endpoint  http://www.misitio.com/api/clients
+const categoria = express.Router();  // trae el metodo router de express para hacer los endpoint  http://www.misitio.com/api/clients
 const conex = require('./bdatos');
 //const url_permitida = "http://127.0.0.1:5500"; //evitar el error de politicas de cors
 
 
 //middlewares requeridos
 //middlewares: logica de intercambio entre las aplicaciones, traductor de datos entre aplicaciones distribuidas
-producto.use(express.json()); //serializa la data en JSON
-producto.use(cors());
-producto.options('*', cors());
+categoria.use(express.json()); //serializa la data en JSON
+categoria.use(cors());
+categoria.options('*', cors());
 
 
 
 // construimos los endpoint
 // listar todos usamos el GET
 
-producto.get('/productos', (req, res) => {
-    conex.query("SELECT * FROM producto", (error, respuesta) => {
+categoria.get('/categoria', (req, res) => {
+    conex.query("SELECT * FROM categoria", (error, respuesta) => {
         if (error) {
             throw error;
         } else {
@@ -29,20 +28,13 @@ producto.get('/productos', (req, res) => {
 
 // insertar un registro
 
- producto.post('/productos', (req, res) => {
+ categoria.post('/categoria', (req, res) => {
     let data = {
         nombre: req.body.nombre,
-        descripcion: req.body.descripcion,
         imagen: req.body.imagen,
-        imagenes: req.body.imagenes,
-        marcha: req.body.marca,
-        precio: req.body.precio,
-        stock: req.body.precio,
-        estado: req.body.calificacion,
-        fechaCreacion: req.body.fechaCreacion,
       };
     
-    conex.query("INSERT INTO producto set ?", data, (error, respuesta) => {
+    conex.query("INSERT INTO categoria set ?", data, (error, respuesta) => {
         if (error) {
             console.log(error);
         } else {
@@ -52,20 +44,13 @@ producto.get('/productos', (req, res) => {
 })
 // editar
 
-producto.put('/productos', (req, res) => {
+categoria.put('/categoria', (req, res) => {
     let id = req.params.id;
     let datos = {
         nombre: req.body.nombre,
-        descripcion: req.body.descripcion,
         imagen: req.body.imagen,
-        imagenes: req.body.imagenes,
-        marcha: req.body.marca,
-        precio: req.body.precio,
-        stock: req.body.precio,
-        estado: req.body.calificacion,
-        fechaCreacion: req.body.fechaCreacion,
     };
-    conex.query("UPDATE producto SET  ? where id = ?", [datos, id]), (error, respuesta) => {
+    conex.query("UPDATE categoria SET  ? where id = ?", [datos, id]), (error, respuesta) => {
         if (error) {
             console.log(error);
         } else {
@@ -77,9 +62,9 @@ producto.put('/productos', (req, res) => {
 })
 //borrar
 
-producto.delete('/productos', (req, res) => {
+categoria.delete('/categoria', (req, res) => {
     let id = req.params.id;
-    conex.query("DELETE FROM producto where id = ?", id), (error, respuesta) => {
+    conex.query("DELETE FROM categoria where id = ?", id), (error, respuesta) => {
         if (error) {
             console.log(error);
         } else {
@@ -90,5 +75,4 @@ producto.delete('/productos', (req, res) => {
 
 }) 
 
-module.exports = producto
-
+module.exports = categoria
