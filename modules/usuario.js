@@ -18,7 +18,7 @@ usuario.options("*", cors());
 usuario.get("/usuario", async (req, res) => {
   try {
     conex.query(
-      "select idUsuario,nombre,contraseña,direccion from usuario",
+      "select idUsuario,nombre,email,contraseña,direccion from usuario",
       (error, respuesta) => {
         console.log(respuesta);
         res.send(respuesta);
@@ -57,7 +57,7 @@ usuario.post("/usuario", async (req, res) => {
     conex.query("insert into usuario set?", [data], (error, respuesta) => {
       console.log(respuesta);
       //res.send("insecion exitosa");
-      res.sendStatus(200);
+      res.send(true);
     });
   } catch (error) {
     console.log(error);
@@ -139,20 +139,24 @@ usuario.post("/login", async (req, res) => {
         "select * from usuario where email =?",
         [email],
         async (error, respuesta) => {
-          if (
-            respuesta.length == 0 ||
-            !(await bcrypt.compare(contraseña, respuesta[0].contraseña))
-          ) {
-            console.log("el usuario o clave ingresada no existe");
+          if (respuesta.length == 0 ||!(await bcrypt.compare(contraseña, respuesta[0].contraseña))
+          ) { 
+
+            // res.sendStatus(404)
+            // res.send({estado:true,nombre:"juanito"})
+            // console.log("el usuario o clave ingresada no existe");
+            res.send(false)
           } else {
             //Enviamos las variables al front end para que cargue la paguina
-            console.log("bienvenido al sistema de informacion");
+            // console.log("bienvenido al sistema de informacion");
+            res.send(true)
           }
         }
       );
     }
   } catch (error) {
-    console.log("error en la red");
+    res.send(true);
+    // console.log("error en la red");
   }
 });
 

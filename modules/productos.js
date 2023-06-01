@@ -35,9 +35,10 @@ producto.get('/productos', (req, res) => {
         descripcion: req.body.descripcion,
         imagen: req.body.imagen,
         imagenes: req.body.imagenes,
-        marcha: req.body.marca,
+        marca: req.body.marca,
         precio: req.body.precio,
         stock: req.body.precio,
+        calificacion:req.body.calificacion,
         estado: req.body.calificacion,
         fechaCreacion: req.body.fechaCreacion,
       };
